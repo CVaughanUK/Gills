@@ -1,0 +1,792 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+
+<!-- Gills - A Simple Mono Synth 
+    
+    Gills is a 2 oscillator mono synth with amp and filter envelopes, as well as a noise oscillator and fm oscillator.
+    Each oscillator can have independant octaves with three waves to choose from, with the fm synth having a scale adjustment.
+    There are two ADSRs, one of the amp and one for the filter, which can be toggled.
+    There are two filters, a hi pass and low pass, both with resonance adjustment.
+
+    -->
+
+<head>
+    <!-- These set the positions of the Nexus interface controls and the text labels -->
+    <style>
+        div.title {
+            position: absolute;
+            left: 45px;
+            top: 6px;
+            font-size: 170%;
+            text-align: center;
+            font-family: Arial;
+        }
+
+        #osc1Select {
+            position: absolute;
+            left: 85px;
+            top: 50px;
+        }
+        #osc1LevelSlider {
+            position: absolute;
+            left: 195px;
+            top: 60px;
+        }
+        div.osc12Label {
+            position: absolute;
+            left: 202px;
+            top: 85px;
+            font-size: 120%;
+            text-align: center;
+            font-family: Arial;
+        }
+        #osc1OctaveButtons {
+            position: absolute;
+            left: 3px;
+            top: 54px;
+        }
+        div.octaveLabel {
+            position: absolute;
+            left: 15px;
+            top: 83px;
+            font-size: 120%;
+            text-align: center;
+            font-family: Arial;
+        }
+
+        #osc2OctaveButtons {
+            position: absolute;
+            left: 3px;
+            top: 115px;
+        }
+        #osc2LevelSlider {
+            position: absolute;
+            left: 195px;
+            top: 110px;
+        }
+        #osc2Select {
+            position: absolute;
+            left: 85px;
+            top: 100px;
+        }
+
+        #osc3LevelDial {
+            position: absolute;
+            left: 350px;
+            top: 58px;
+        }
+        div.osc3Label {
+            position:absolute;
+            writing-mode:vertical-rl;
+            text-orientation: upright;
+            left:340px;
+            top:42px;
+            font-size: 120%;
+            text-align: center;
+            font-family: Arial;
+        }
+
+        #fmAmntDial {
+            position: absolute;
+            left: 290px;
+            top: 40px;
+        }
+        div.fmLabel {
+            position: absolute;
+            left: 300px;
+            top: 85px;
+            font-size: 120%;
+            text-align: center;
+            font-family: Arial;
+        }
+        #fmLevelDial {
+            position: absolute;
+            left: 290px;
+            top: 110px;
+        }
+
+        #ampEnvAttackSlider {
+            position: absolute;
+            left: 15px;
+            top: 165px;
+        }
+        div.ampEnvAttackLabel {
+            position: absolute;
+            left: 20px;
+            top: 270px;
+            font-size: 120%;
+            text-align: center;
+            font-family: Arial;
+        }
+        #ampEnvDecaySlider {
+            position: absolute;
+            left: 45px;
+            top: 185px;
+        }
+        div.ampEnvDecayLabel {
+            position: absolute;
+            left: 50px;
+            top: 160px;
+            font-size: 120%;
+            text-align: center;
+            font-family: Arial;
+        }
+        #ampEnvSustainSlider {
+            position: absolute;
+            left: 75px;
+            top: 185px;
+        }
+        div.ampEnvSustainLabel {
+            position: absolute;
+            left: 80px;
+            top: 160px;
+            font-size: 120%;
+            text-align: center;
+            font-family: Arial;
+        }
+        #ampEnvReleaseSlider {
+            position: absolute;
+            left: 105px;
+            top: 165px;
+        }
+        div.ampEnvReleaseLabel {
+            position: absolute;
+            left: 110px;
+            top: 270px;
+            font-size: 120%;
+            text-align: center;
+            font-family: Arial;
+        }
+
+        #hpfFilterDial {
+            position: absolute;
+            left: 140px;
+            top: 225px;
+        }
+        div.hpfLabel {
+            position: absolute;
+            writing-mode: vertical-rl;
+            text-orientation: upright;
+            left: 198px;
+            top: 235px;
+            font-size: 120%;
+            font-family: Arial;
+        }
+
+        #lpfFilterDial {
+            position: absolute;
+            left: 220px;
+            top: 155px;
+        }
+        div.lpfLabel {
+            position: absolute;
+            writing-mode: vertical-rl;
+            text-orientation: upright;
+            left: 198px;
+            top: 155px;
+            font-size: 120%;
+            text-align: center;
+            font-family: Arial;
+        }
+
+        #resFilterDial {
+            position: absolute;
+            left: 152px;
+            top: 170px;
+        }
+        div.resFilterDialLabel {
+            position: absolute;
+            left: 154px;
+            top: 205px;
+            font-size: 120%;
+            font-family: Arial;
+        }
+
+        #envFilterSwitch {
+            position: absolute;
+            left: 235px;
+            top: 263px;
+        }
+        div.envFilterSwitchLabel {
+            position: absolute;
+            left: 238px;
+            top: 248px;
+            font-size: 120%;
+            font-family: Arial;
+        }
+
+
+        #filterEnvAttackSlider {
+            position: absolute;
+            left: 298px;
+            top: 165px;
+        }
+        div.filterEnvAttackLabel {
+            position: absolute;
+            left: 303px;
+            top: 270px;
+            font-size: 120%;
+            text-align: center;
+            font-family: Arial;
+        }
+
+        #filterEnvDecaySlider {
+            position: absolute;
+            left: 328px;
+            top: 185px;
+        }
+        div.filterEnvDecayLabel {
+            position: absolute;
+            left: 333px;
+            top: 165px;
+            font-size: 120%;
+            text-align: center;
+            font-family: Arial;
+        }
+
+        #filterEnvSustainSlider {
+            position: absolute;
+            left: 358px;
+            top: 185px;
+        }
+        div.filterEnvSustainLabel {
+            position: absolute;
+            left: 363px;
+            top: 165px;
+            font-size: 120%;
+            text-align: center;
+            font-family: Arial;
+        }
+
+        #filterEnvReleaseSlider {
+            position: absolute;
+            left: 388px;
+            top: 165px;
+        }
+        div.filterEnvReleaseLabel {
+            position: absolute;
+            left: 395px;
+            top: 270px;
+            font-size: 120%;
+            text-align: center;
+            font-family: Arial;
+        }
+
+
+    </style>
+
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <!-- This loads in the libraries Maxim and Nexus-->
+    <script src="js/_maxiLib.js" type="text/javascript"></script>
+    <script src="js/NexusUI.js" type="text/javascript"></script>
+
+</head>
+
+<body>
+
+    <!--Nexus Control IDs-->
+    <div id="osc1Select"></div>
+    <div id="osc1OctaveButtons"></div>
+    <div id="osc1LevelSlider"></div>
+    <div id="osc2Select"></div>
+    <div id="osc2OctaveButtons"></div>
+    <div id="osc2LevelSlider"></div>
+    <div id="osc3LevelDial"></div>
+    <div id="fmLevelDial"></div>
+    <div id="fmAmntDial"></div>
+    <div id="ampEnvAttackSlider"></div>
+    <div id="ampEnvDecaySlider"></div>
+    <div id="ampEnvSustainSlider"></div>
+    <div id="ampEnvReleaseSlider"></div>
+    <div id="lpfFilterDial"></div>
+    <div id="hpfFilterDial"></div>
+    <div id="resFilterDial"></div>
+    <div id="envFilterSwitch"></div>
+    <div id="filterEnvAttackSlider"></div>
+    <div id="filterEnvDecaySlider"></div>
+    <div id="filterEnvSustainSlider"></div>
+    <div id="filterEnvReleaseSlider"></div>
+
+    <!-- This creates the text for labelling the synth -->
+    <div class="title"> Gills - A Simple Mono Synth</div>
+
+    <div class="octaveLabel"> octave </div>
+    <div class="osc12Label"> osc 1+2</div>
+    <div class="fmLabel"> fm </div>
+    <div class="osc3Label"> noise </div>
+
+    <div class="ampEnvAttackLabel"> a</div>
+    <div class="ampEnvDecayLabel"> d</div>
+    <div class="ampEnvSustainLabel"> s</div>
+    <div class="ampEnvReleaseLabel"> r</div>
+
+
+    <div class="lpfLabel"> lpf</div>
+    <div class="hpfLabel"> hpf</div>
+    <div class="resFilterDialLabel"> res </div>
+    <div class="envFilterSwitchLabel"> env </div>
+
+    <div class="filterEnvAttackLabel"> a </div>
+    <div class="filterEnvDecayLabel"> d </div>
+    <div class="filterEnvSustainLabel"> s </div>
+    <div class="filterEnvReleaseLabel"> r </div>
+
+    <!-- Main Script -->
+    <script type="text/javascript">
+        //  NEXUS SETUP FUNCTIONS
+        //Each of these contains a function which creates the appropriate Nexus interface object
+        //and a function for when the object is changed, which will change the appropriate variable
+
+        ////// OSC 1 SETUP /////////////
+
+        function osc1Setup() {
+            osc1Select = new window.Nexus.Select('#osc1Select', {
+                'size': [100, 40],
+                'options': ['sine', 'square', 'saw'],
+            });
+            osc1Select.on('change', function (val) {
+                osc1Wave = val.value;
+            });
+
+            osc1OctaveButtons = new window.Nexus.RadioButton('#osc1OctaveButtons', {
+                'size': [80, 20],
+                'numberOfButtons': 3,
+                'active': 1,
+            });
+            osc1OctaveButtons.on('change', function (val) {
+                if (val >= 0) {
+                    osc1Octave = val;
+                } else {
+                    osc1OctaveButtons.select(osc1Octave);
+                }
+            });
+
+            osc1LevelSlider = new window.Nexus.Slider('#osc1LevelSlider', {
+                'size': [80, 20],
+                'min': 0,
+                'max': 1
+            });
+            osc1LevelSlider.on('change', function (val) {
+                osc1Level = val;
+            });
+        }
+
+        ////// OSC 2 SETUP ////// OSC 2 SETUP //////
+
+        function osc2Setup() {
+            osc2OctaveButtons = new window.Nexus.RadioButton('#osc2OctaveButtons', {
+                'size': [80, 20],
+                'numberOfButtons': 3,
+                'active': 1,
+            });
+            osc2OctaveButtons.on('change', function (val) {
+                if (val >= 0) {
+                    osc2Octave = val;
+                } else {
+                    osc1OctaveButtons.select(osc2Octave);
+                }
+            });
+
+            osc2Select = new window.Nexus.Select('#osc2Select', {
+                'size': [100, 40],
+                'options': ['sine', 'square', 'saw']
+            });
+            osc2Select.on('change', function (val) {
+                osc2Wave = val.value;
+            });
+
+            osc2LevelSlider = new window.Nexus.Slider('#osc2LevelSlider', {
+                'size': [80, 20],
+                'min': 0,
+                'max': 1
+            });
+            osc2LevelSlider.on('change', function (val) {
+                osc2Level = val;
+            });
+
+        }
+
+        /////// OSC 3 SETUP ///// OSC 3 SETUP //////
+
+        function osc3Setup() {
+            osc3LevelDial = new window.Nexus.Dial('#osc3LevelDial', {
+                'size': [100, 75],
+                'min': 0,
+                'max': 1,
+            });
+            osc3LevelDial.on('change', function (val) {
+                osc3Level = val;
+            });
+        }
+
+        /////// FM OSC SETUP
+
+        function fmSetup() {
+            fmLevelDial = new window.Nexus.Dial('#fmLevelDial', {
+                'size': [40, 40],
+                'min': 0,
+                'max': 1
+            });
+            fmLevelDial.on('change', function (val) {
+                fmOscLevel = val;
+            });
+
+            fmAmntDial = new window.Nexus.Dial('#fmAmntDial', {
+                'size': [40, 40],
+                'min': 0,
+                'max': 50
+            });
+            fmAmntDial.on('change', function (val) {
+                fmAmnt = val;
+            });
+        }
+
+        /////// AMP ADSR SETUP ///// AMP ADSR SETUP //////
+
+        function ampAdsrSetup() {
+            ampEnvAttackSlider = new window.Nexus.Slider('#ampEnvAttackSlider', {
+                'size': [20, 105],
+                'min': 10,
+                'max': 1500,
+                'value': 500
+            });
+            ampEnvAttackSlider.on('change', function (val) {
+                ampEnvAttack = val;
+            });
+
+            ampEnvDecaySlider = new window.Nexus.Slider('#ampEnvDecaySlider', {
+                'size': [20, 105],
+                'min': 0.001,
+                'max': 1,
+                'value': 0.8
+            });
+            ampEnvDecaySlider.on('change', function (val) {
+                ampEnvDecay = val;
+            });
+
+            ampEnvSustainSlider = new window.Nexus.Slider('#ampEnvSustainSlider', {
+                'size': [20, 105],
+                'min': 0.001,
+                'max': 1,
+                'value': 0.8
+            });
+            ampEnvSustainSlider.on('change', function (val) {
+                ampEnvSustain = val;
+            });
+
+            ampEnvReleaseSlider = new window.Nexus.Slider('#ampEnvReleaseSlider', {
+                'size': [20, 105],
+                'min': 10,
+                'max': 2000,
+                'value': 500
+            });
+            ampEnvReleaseSlider.on('change', function (val) {
+                ampEnvRelease = val;
+            });
+
+        }
+
+        /////// FILTER ADSR SETUP ///// FILTER ADSR SETUP //////
+
+        function filterAdsrSetup() {
+            filterEnvAttackSlider = new window.Nexus.Slider('#filterEnvAttackSlider', {
+                'size': [20, 105],
+                'min': 10,
+                'max': 1500,
+                'value': 500
+            });
+            filterEnvAttackSlider.on('change', function (val) {
+                filterEnvAttack = val;
+            });
+
+            filterEnvDecaySlider = new window.Nexus.Slider('#filterEnvDecaySlider', {
+                'size': [20, 105],
+                'min': 0.001,
+                'max': 1,
+                'value': 0.8
+            });
+            filterEnvDecaySlider.on('change', function (val) {
+                filterEnvDecay = val;
+            });
+
+            filterEnvSustainSlider = new window.Nexus.Slider('#filterEnvSustainSlider', {
+                'size': [20, 105],
+                'min': 0.001,
+                'max': 1,
+                'value': 0.8
+            });
+            filterEnvSustainSlider.on('change', function (val) {
+                filterEnvSustain = val;
+            });
+
+            filterEnvReleaseSlider = new window.Nexus.Slider('#filterEnvReleaseSlider', {
+                'size': [20, 105],
+                'min': 20,
+                'max': 2000,
+                'value': 500
+            });
+            filterEnvReleaseSlider.on('change', function (val) {
+                filterEnvRelease = val;
+            });
+
+        }
+
+        //// FILTERS SETUP ///// FILTERS SETUP /////////////
+
+        function filtersSetup() {
+            lpfFilterDial = new window.Nexus.Dial('#lpfFilterDial', {
+                'size': [60, 75],
+                'min': 1,
+                'max': 15000,
+                'value': 15000
+            });
+            lpfFilterDial.on('change', function (val) {
+                lpfFilterFreq = val;
+            });
+
+            hpfFilterDial = new window.Nexus.Dial('#hpfFilterDial', {
+                'size': [60, 75],
+                'min': 1,
+                'max': 15000,
+                'value': 1
+            });
+            hpfFilterDial.on('change', function (val) {
+                hpfFilterFreq = val;
+            });
+
+
+            resFilterDial = new window.Nexus.Dial('#resFilterDial', {
+                'size': [30, 40],
+                'min': 4,
+                'max': 30,
+                'value': 4
+            });
+            resFilterDial.on('change', function (val) {
+                resFilterAmnt = val;
+            });
+
+            envFilterSwitch = new window.Nexus.Toggle('#envFilterSwitch', {
+                'size': [45, 40],
+                'state': false,
+            });
+            envFilterSwitch.on('change', function (val) {
+                envFilterState = val;
+            });
+        };
+
+        //Runs the setup functions for the Nexus controls
+        osc1Setup();
+        osc2Setup();
+        osc3Setup();
+        ampAdsrSetup();
+        filterAdsrSetup();
+        filtersSetup();
+        fmSetup();
+
+        //Creates the Maxi audio driver
+        var maxiAudio = new maximJs.maxiAudio();
+        //Creates the oscillator objects
+        var osc1 = new maximJs.maxiOsc();
+        var osc2 = new maximJs.maxiOsc();
+        var osc3 = new maximJs.maxiOsc();
+        var fmOsc = new maximJs.maxiOsc();
+
+        //Creates the oscilaltor 1 variables
+        var osc1Out = 0;
+        var osc1Wave = "sine";
+        var osc1Level = 0;
+        var osc1Octave = 1;
+
+        //Creates the oscilaltor 2 variables
+        var osc2Level = 0;
+        var osc2Wave = "sine";
+        var osc2Out = 0;
+        var osc2Out2 = 0;
+        var osc2Octave = 1;
+
+        //Creates the oscilaltor 3 variables
+        var osc3Level = 0;
+        var osc3Out = 0;
+
+        //Creates the fm oscilaltor variables
+        var fmOscOut = 0;
+        var fmOscWave = "sine";
+        var fmOscBaseFreq = 0;
+        var fmOscModFreq = 0;
+        var fmOscLevel = 0;
+        var fmAmnt = 0;
+
+        //Creates the amp envelope object
+        var ampEnv = new maximJs.maxiEnv();
+        //Creates the amp envelope variables
+        var ampEnvAttack = 500;
+        var ampEnvDecay = 0.8;
+        var ampEnvSustain = 0.8;
+        var ampEnvRelease = 500;
+        //Creates the amp output
+        var ampOut;
+
+        //Creates the filter envelope object
+        var filterEnv = new maximJs.maxiEnv();
+        //Creates the filter envelope variables
+        var filterEnvAttack = 500;
+        var filterEnvDecay = 0.8;
+        var filterEnvSustain = 0.8;
+        var filterEnvRelease = 500;
+        var envFilterState = false;
+
+        //Creates the filter objects
+        var lpfFilter = new maximJs.maxiFilter();
+        var hpfFilter = new maximJs.maxiFilter();
+        //Creates the filter variables
+        var lpfFilterFreq = 15000;
+        var hpfFilterFreq = 0;
+        var filterOut1;
+        var filterOut2;
+        var resFilterAmnt = 4;
+
+        //Creates the clock object
+        var myClock = new maximJs.maxiClock();
+        //Sets the settings for the clock
+        myClock.setTicksPerBeat(1);
+        myClock.setTempo(120);
+
+        //Creates the variables for the arpegiator
+        var counter = 0;
+        var osc1ArpArray = [];
+        var osc2ArpArray = [];
+
+        //Creates the frequency calculation variables
+        var freqIn = 100;
+        var osc1FreqIn;
+        var osc2FreqIn;
+        var osc1FreqOut = 0;
+        var osc2FreqOut = 0;
+
+        //Function for creating the pitch
+        function oscPitchUpdate() {
+
+            //Sets the oscillator frequency so it doubles on the upper octave
+            if (osc1Octave <= 1) {
+                osc1FreqIn = freqIn * (osc1Octave + 1);
+            } else {
+                osc1FreqIn = freqIn * (osc1Octave + 2);
+            }
+            //Fills the array with 4 values on different octaves
+            for (var i = 0; i < 4; i++) {
+                if (i <= 2) {
+                    osc1ArpArray[i] = osc1FreqIn * (i + 1);
+                } else {
+                    osc1ArpArray[i] = osc1FreqIn * (i - 1);
+                }
+            }
+
+            //Sets the oscillator frequency so it doubles on the upper octave
+            if (osc2Octave <= 1) {
+                osc2FreqIn = freqIn * (osc2Octave);
+            } else {
+                osc2FreqIn = freqIn * (osc2Octave + 1);
+            }
+
+            //Fills the array with 4 values on different octaves
+            for (var i = 0; i < 4; i++) {
+                if (i <= 2) {
+                    osc2ArpArray[i] = osc2FreqIn * (i + 1);
+                } else {
+                    osc2ArpArray[i] = osc2FreqIn * (i - 1);
+                }
+            }
+        }
+
+        //Initialises the audio driver
+        maxiAudio.init();
+
+        //Our maxi audio function
+        maxiAudio.play = function () {
+            //Gets that clock ticking
+            myClock.ticker();
+
+            //Keeps the pitchs in the arp array updating
+            oscPitchUpdate();
+
+            //If there is a click these things happen
+            if (myClock.tick) {
+                //The ADSRs are triggered
+                ampEnv.trigger = 1;
+                filterEnv.trigger = 1;
+                //Sets the frequency's for the oscillator by cycling through the array
+                osc1FreqOut = osc1ArpArray[counter % 4];
+                osc2FreqOut = osc2ArpArray[counter % 4];
+                //Increments the counter
+                counter++;
+
+                
+
+            } else {
+                //Sets the ADSRs to off
+                ampEnv.trigger = 0;
+                filterEnv.trigger = 0;
+            }
+
+            //This changes the waveform of osc 1 according to what is selected
+            //Each waveform uses the freq out from the array for pitch and has a level control
+            if (osc1Wave === "sine") {
+                osc1Out = osc1.sinewave(osc1FreqOut) * osc1Level;
+            } else if (osc1Wave === "square") {
+                osc1Out = osc1.square(osc1FreqOut) * osc1Level;
+            } else if (osc1Wave === "saw") {
+                osc1Out = osc1.sawn(osc1FreqOut) * osc1Level;
+            }
+
+            //This is the FM oscillator which uses osc1 for the base freq and osc2 for the mod freq, with variables for the amount and level
+            fmOscOut = fmOsc.sinewave(osc1FreqOut * ((osc2Out2) * fmAmnt)) * fmOscLevel;
+
+            //This changes the waveform of osc 2 according to what is selected
+            //Each waveform uses the freq out from the array for pitch and has a level control
+            if (osc2Wave === 'sine') {
+                osc2Out = osc2.sinewave(osc2FreqOut) * osc2Level;
+                osc2Out2 = osc2.sinewave(osc2FreqOut);
+            } else if (osc2Wave === 'square') {
+                osc2Out = osc2.square(osc2FreqOut) * osc2Level;
+                osc2Out2 = osc2.square(osc2FreqOut);
+            } else if (osc2Wave === 'saw') {
+                osc2Out = osc2.sawn(osc2FreqOut) * osc2Level;
+                osc2Out2 = osc2.sawn(osc2FreqOut);
+            }
+
+            //This controls the noise oscillator
+            osc3Out = osc3.noise() * osc3Level;
+
+            //This sets the envelopes for the amplitude with the variables controlled by the Nexus interface
+            ampEnv.setAttack(ampEnvAttack);
+            ampEnv.setDecay(ampEnvDecay);
+            ampEnv.setSustain(ampEnvSustain);
+            ampEnv.setRelease(ampEnvRelease);
+
+            //This sets the envelopes for the filter with the variables controlled by the Nexus interface
+            filterEnv.setAttack(filterEnvAttack);
+            filterEnv.setDecay(filterEnvDecay);
+            filterEnv.setSustain(filterEnvSustain);
+            filterEnv.setRelease(filterEnvRelease);
+
+            //This creates an amp output of all the oscillators and then applies the amp adsr to it
+            ampOut = (osc1Out + osc2Out + osc3Out + fmOscOut) * ampEnv.adsr(1, ampEnv.trigger);
+
+            //This will apply the filter adsr to the two filters only when the switch is on
+            //Otherwise there is just a standard hi pass and low pass resonant filter applied to the signal
+            if (envFilterState == true) {
+                filterOut1 = hpfFilter.hires(ampOut, filterEnv.adsr(hpfFilterFreq, filterEnv.trigger), resFilterAmnt);
+                filterOut2 = lpfFilter.lores(filterOut1, filterEnv.adsr(lpfFilterFreq, filterEnv.trigger), resFilterAmnt);
+            } else {
+                filterOut1 = hpfFilter.hires(ampOut, hpfFilterFreq, resFilterAmnt);
+                filterOut2 = lpfFilter.lores(filterOut1, lpfFilterFreq, resFilterAmnt);
+            }
+
+            //Outputs the filters to the soundcard
+            this.output = filterOut2;
+        };
+
+    </script>
+</body>
+</html>
